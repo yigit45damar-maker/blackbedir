@@ -74,24 +74,18 @@
         <div class="urun-kart">
             <div class="d-flex align-items-center">
                 <img src="assets/img/soguk_icecek.jpg" style="width: 70px; height: 70px; border-radius: 10px; object-fit: cover; margin-right: 15px; border: 2px solid #e6a756;">
-                <div><h5>Kutu İçecekler (Pepsi/Yedigün)</h5><p class="fw-bold mb-0 text-success">50 TL</p></div>
+                <div><h5>Kutu İçecekler</h5><p class="fw-bold mb-0 text-success">50 TL</p></div>
             </div>
             <button class="sepete-ekle-btn" onclick="sepeteEkle('Soğuk İçecek', 50)">+</button>
         </div>
 
-   <div class="urun-kart">
-    <div class="d-flex align-items-center">
-        <img src="assets/img/su.jpg" alt="Su" 
-             style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid #e6a756;">
-        
-        <div>
-            <h5 class="mb-0" style="font-size: 1rem;">Su (500ml)</h5>
-            <p class="fw-bold mb-0 text-success">10 TL</p>
+        <div class="urun-kart">
+            <div class="d-flex align-items-center">
+                <img src="assets/img/su.jpg" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid #e6a756;">
+                <div><h5>Su (500ml)</h5><p class="fw-bold mb-0 text-success">10 TL</p></div>
+            </div>
+            <button class="sepete-ekle-btn" onclick="sepeteEkle('Su', 10)">+</button>
         </div>
-    </div>
-    
-    <button class="sepete-ekle-btn" onclick="sepeteEkle('Su', 10)">+</button>
-</div>
 
     </div>
 
@@ -171,7 +165,7 @@
         }
 
         function sepeteEkle(ad, fiyat) {
-            sepet.push({ ad, fiyat });
+            sepet.push({ ad, fiyat, detay: "Standart" });
             document.getElementById('sepet-sayisi').innerText = sepet.length;
         }
 
@@ -184,9 +178,12 @@
 
         function ozelSiparisOnayla() {
             const secimler = Array.from(document.querySelectorAll('#secenekModal input:checked')).map(e => e.value);
+            let ekFiyat = 0;
+            if (secimler.includes("Dondurma")) ekFiyat = 20;
+
             sepet.push({ 
                 ad: seciliUrun.ad, 
-                fiyat: seciliUrun.fiyat, 
+                fiyat: seciliUrun.fiyat + ekFiyat, 
                 detay: secimler.length > 0 ? secimler.join(", ") : "Standart" 
             });
             document.getElementById('sepet-sayisi').innerText = sepet.length;
@@ -195,8 +192,26 @@
 
         function siparisiTamamla() {
             if(sepet.length === 0) return alert("Sepetiniz henüz boş!");
-            alert("Masa " + masaNo + " siparişi başarıyla alındı. Afiyet olsun!");
-            console.log("Mutfak Çıktısı:", sepet);
+            
+            // --- WHATSAPP ENTEGRASYONU ---
+            let telNo = "905454189259"; // BURAYA İŞLETMENİN WHATSAPP NUMARASINI YAZ (Örn: 90544...)
+            let mesaj = `*BlackBedir Yeni Sipariş*\n*Masa No:* ${masaNo}\n--------------------------\n`;
+            
+            let toplamFiyat = 0;
+            sepet.forEach((urun, index) => {
+                mesaj += `${index + 1}. *${urun.ad}* - ${urun.fiyat} TL\n`;
+                mesaj += `_Tercihler:_ ${urun.detay}\n\n`;
+                toplamFiyat += urun.fiyat;
+            });
+            
+            mesaj += `--------------------------\n*Genel Toplam:* ${toplamFiyat} TL`;
+            
+            let wpLink = `https://wa.me/${telNo}?text=${encodeURIComponent(mesaj)}`;
+            
+            alert("Masa " + masaNo + " siparişi hazırlandı. WhatsApp'a yönlendiriliyorsunuz...");
+            window.open(wpLink, '_blank');
+            
+            // Sipariş sonrası sepeti temizle
             sepet = [];
             document.getElementById('sepet-sayisi').innerText = "0";
         }
