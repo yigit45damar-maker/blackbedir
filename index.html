@@ -16,6 +16,7 @@
         .checkbox-grup { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #fff; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
         .opt-title { color: #2c1b18; font-weight: bold; margin-top: 15px; border-left: 4px solid #e6a756; padding-left: 10px; font-size: 0.9rem; }
         label { font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+        .modal-header { background-color: #2c1b18; color: white; }
     </style>
 </head>
 <body>
@@ -32,9 +33,9 @@
         <div class="urun-kart">
             <div class="d-flex align-items-center">
                 <img src="assets/img/products-01.jpg" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover; margin-right: 15px; border: 2px solid #e6a756;">
-                <div><h5>Special Bubble</h5><p class="fw-bold mb-0 text-success">250 TL</p></div>
+                <div><h5>Special Bubble</h5><p class="fw-bold mb-0 text-success">300 TL</p></div>
             </div>
-            <button class="sepete-ekle-btn" onclick="ozelSecenekAc('Special Bubble', 250)">+</button>
+            <button class="sepete-ekle-btn" onclick="ozelSecenekAc('Special Bubble', 300)">+</button>
         </div>
 
         <div class="urun-kart">
@@ -60,7 +61,7 @@
                 <img src="assets/img/kahve.jpg" style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-right: 15px; border: 2px solid #e6a756;">
                 <div><h5>Kumda Kahve</h5><p class="fw-bold mb-0 text-success">80 TL</p></div>
             </div>
-            <button class="sepete-ekle-btn" onclick="sepeteEkle('Kumda Kahve', 80)">+</button>
+            <button class="sepete-ekle-btn" onclick="kahveSecenekAc('Kumda Kahve', 80)">+</button>
         </div>
 
         <div class="urun-kart">
@@ -76,7 +77,7 @@
                 <img src="assets/img/soguk_icecek.jpg" style="width: 70px; height: 70px; border-radius: 10px; object-fit: cover; margin-right: 15px; border: 2px solid #e6a756;">
                 <div><h5>Kutu İçecekler</h5><p class="fw-bold mb-0 text-success">50 TL</p></div>
             </div>
-            <button class="sepete-ekle-btn" onclick="sepeteEkle('Soğuk İçecek', 50)">+</button>
+            <button class="sepete-ekle-btn" onclick="icecekSecenekAc('Kutu İçecek', 50)">+</button>
         </div>
 
         <div class="urun-kart">
@@ -97,7 +98,6 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body" style="max-height: 500px; overflow-y: auto;">
-                    
                     <p class="opt-title">Çikolata Sosları (Maks 2)</p>
                     <div class="checkbox-grup">
                         <label><input type="checkbox" name="cikolata" value="Sütlü" onchange="limitCheck(this, 2)"> Sütlü</label>
@@ -125,7 +125,6 @@
                     <div class="checkbox-grup">
                         <label><input type="checkbox" name="meyve" value="Muz" onchange="limitCheck(this, 2)"> Muz</label>
                         <label><input type="checkbox" name="meyve" value="Çilek" onchange="limitCheck(this, 2)"> Çilek</label>
-                        <label><input type="checkbox" name="meyve" value="Kivi" onchange="limitCheck(this, 2)"> Kivi</label>
                     </div>
 
                     <p class="opt-title">Ekstralar</p>
@@ -133,10 +132,58 @@
                         <label><input type="checkbox" name="ekstra" value="Dondurma"> Maraş Dondurma (+20TL)</label>
                         <label><input type="checkbox" name="ekstra" value="Krema"> Çırpılmış Krema</label>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success w-100 fw-bold" onclick="ozelSiparisOnayla()">SEPETE EKLE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="kahveModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">KAHVE TERCİHİ</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="opt-title">Şeker Oranı Seçiniz</p>
+                    <div class="d-flex flex-column gap-2">
+                        <label class="p-2 border rounded"><input type="radio" name="seker" value="Sade (Şekersiz)" checked> Sade (Şekersiz)</label>
+                        <label class="p-2 border rounded"><input type="radio" name="seker" value="Az Şekerli"> Az Şekerli</label>
+                        <label class="p-2 border rounded"><input type="radio" name="seker" value="Orta Şekerli"> Orta Şekerli</label>
+                        <label class="p-2 border rounded"><input type="radio" name="seker" value="Şekerli"> Şekerli</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success w-100 fw-bold" onclick="kahveSiparisOnayla()">SEPETE EKLE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="icecekModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">İÇECEK SEÇİMİ</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="opt-title">Lütfen Birini Seçiniz</p>
+                    <div class="d-flex flex-column gap-2">
+                        <label class="p-2 border rounded"><input type="radio" name="icecekTip" value="Coca Cola" checked> Coca Cola</label>
+                        <label class="p-2 border rounded"><input type="radio" name="icecekTip" value="Fanta"> Fanta</label>
+                        <label class="p-2 border rounded"><input type="radio" name="icecekTip" value="Sprite"> Sprite</label>
+                        <label class="p-2 border rounded"><input type="radio" name="icecekTip" value="Yedigün"> Yedigün</label>
+                        <label class="p-2 border rounded"><input type="radio" name="icecekTip" value="Fuse Tea Limon"> Fuse Tea Limon</label>
+                        <label class="p-2 border rounded"><input type="radio" name="icecekTip" value="Fuse Tea Şeftali"> Fuse Tea Şeftali</label>
+                        <label class="p-2 border rounded"><input type="radio" name="icecekTip" value="Cappy Karışık"> Cappy Karışık</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success w-100 fw-bold" onclick="icecekSiparisOnayla()">SEPETE EKLE</button>
                 </div>
             </div>
         </div>
@@ -172,7 +219,7 @@
         function ozelSecenekAc(ad, fiyat) {
             seciliUrun = { ad, fiyat };
             document.getElementById('modalUrunAd').innerText = ad.toUpperCase();
-            document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
+            document.querySelectorAll('#secenekModal input[type="checkbox"]').forEach(c => c.checked = false);
             new bootstrap.Modal(document.getElementById('secenekModal')).show();
         }
 
@@ -190,11 +237,43 @@
             bootstrap.Modal.getInstance(document.getElementById('secenekModal')).hide();
         }
 
+        function kahveSecenekAc(ad, fiyat) {
+            seciliUrun = { ad, fiyat };
+            new bootstrap.Modal(document.getElementById('kahveModal')).show();
+        }
+
+        function kahveSiparisOnayla() {
+            const sekerTercihi = document.querySelector('input[name="seker"]:checked').value;
+            sepet.push({ 
+                ad: seciliUrun.ad, 
+                fiyat: seciliUrun.fiyat, 
+                detay: sekerTercihi 
+            });
+            document.getElementById('sepet-sayisi').innerText = sepet.length;
+            bootstrap.Modal.getInstance(document.getElementById('kahveModal')).hide();
+        }
+
+        // İÇECEK SEÇİMİ İÇİN FONKSİYONLAR
+        function icecekSecenekAc(ad, fiyat) {
+            seciliUrun = { ad, fiyat };
+            new bootstrap.Modal(document.getElementById('icecekModal')).show();
+        }
+
+        function icecekSiparisOnayla() {
+            const secilenIcecek = document.querySelector('input[name="icecekTip"]:checked').value;
+            sepet.push({ 
+                ad: seciliUrun.ad, 
+                fiyat: seciliUrun.fiyat, 
+                detay: secilenIcecek 
+            });
+            document.getElementById('sepet-sayisi').innerText = sepet.length;
+            bootstrap.Modal.getInstance(document.getElementById('icecekModal')).hide();
+        }
+
         function siparisiTamamla() {
             if(sepet.length === 0) return alert("Sepetiniz henüz boş!");
             
-            // --- WHATSAPP ENTEGRASYONU ---
-            let telNo = "905454189259"; // BURAYA İŞLETMENİN WHATSAPP NUMARASINI YAZ (Örn: 90544...)
+            let telNo = "905454189259"; 
             let mesaj = `*BlackBedir Yeni Sipariş*\n*Masa No:* ${masaNo}\n--------------------------\n`;
             
             let toplamFiyat = 0;
@@ -211,7 +290,6 @@
             alert("Masa " + masaNo + " siparişi hazırlandı. WhatsApp'a yönlendiriliyorsunuz...");
             window.open(wpLink, '_blank');
             
-            // Sipariş sonrası sepeti temizle
             sepet = [];
             document.getElementById('sepet-sayisi').innerText = "0";
         }
